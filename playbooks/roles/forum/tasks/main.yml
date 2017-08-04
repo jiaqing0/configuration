@@ -47,8 +47,8 @@
 - name: setup the forum env
   template:
     src: forum_env.j2
-    dest: "{{ forum_app_dir }}/forum_env"
-    owner: "{{ forum_user }}" 
+    dest: "{{ forum_app_dir }}/{{ item.key }}_env"
+    owner: "{{ forum_user }}"
     group: "{{ common_web_user }}"
     mode: 0644
   notify:
@@ -56,6 +56,7 @@
   tags:
     - install
     - install:base
+  with_dict: "{{ forum_environments }}"
 
 - name: create {{ forum_data_dir }}
   file:
@@ -67,7 +68,7 @@
   tags:
     - install
     - install:base
-    
+
 - include: deploy.yml
-  tags: 
+  tags:
     - deploy
