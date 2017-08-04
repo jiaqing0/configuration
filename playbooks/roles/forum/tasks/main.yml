@@ -44,10 +44,10 @@
     - install
     - install:base
 
-- name: setup the forum env
+- name: setup the forum env for stage/prod
   template:
     src: forum_env.j2
-    dest: "{{ forum_app_dir }}/{{ item.key }}"
+    dest: "{{ forum_app_dir }}/forum_env"
     owner: "{{ forum_user }}"
     group: "{{ common_web_user }}"
     mode: 0644
@@ -56,7 +56,24 @@
   tags:
     - install
     - install:base
-  with_dict: "{{ forum_environments }}"
+  with_items:
+    - "{{ forum_env }}"
+
+- name: setup the forum env for devstack
+  template:
+    src: forum_env.j2
+    dest: "{{ forum_app_dir }}/devstack_forum_env"
+    owner: "{{ forum_user }}"
+    group: "{{ common_web_user }}"
+    mode: 0644
+  notify:
+    - restart the forum service
+  tags:
+    - install
+    - install:base
+  when: devstack is defined and devstack
+  with_items:
+    - "{{ devstack_forum_env }}"
 
 - name: create {{ forum_data_dir }}
   file:

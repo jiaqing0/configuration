@@ -1,6 +1,6 @@
 # {{ ansible_managed }}
 
-{% for name,value in item['value'].items() -%}
+{% for name,value in item.items() -%}
 {%- if value -%}
 export {{ name }}="{{ value }}"
 {% endif %}
