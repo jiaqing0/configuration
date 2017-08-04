@@ -47,7 +47,7 @@
 - name: setup the forum env
   template:
     src: forum_env.j2
-    dest: "{{ forum_app_dir }}/{{ item.key }}_env"
+    dest: "{{ forum_app_dir }}/{{ item.key }}"
     owner: "{{ forum_user }}"
     group: "{{ common_web_user }}"
     mode: 0644
